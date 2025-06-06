@@ -1,67 +1,61 @@
 # Cup Tracking with YOLOv8 and DeepSORT
 
-This project implements real-time cup/mug tracking in videos using YOLOv8 object detection and DeepSORT tracking algorithm. The system can detect and track multiple cups/mugs in a video stream, assign unique IDs to each cup, and visualize their trajectories with different colors.
+This project implements real-time cup/mug tracking in videos using YOLOv8 object detection and DeepSORT tracking algorithm. The system detects and tracks multiple cups/mugs in a video stream, assigns unique IDs to each cup, and visualizes their trajectories with different colors.
 
 ## Key Features
-- Real-time cup detection using YOLOv8
-- Multi-object tracking with DeepSORT
-- Unique ID assignment for each tracked cup
-- Trajectory visualization with different colors
-- Confidence score display
+- Real-time cup detection using YOLOv8 nano model
+- Multi-object tracking with enhanced DeepSORT (max_age=30, max_lost=5, iou_threshold=0.3)
+- Unique ID and color assignment for each tracked cup
+- Trajectory visualization (last 50 points)
+- Confidence score display for each detection
 - Additional object detection display (in gray)
 
-## Setup and Installation
+## Requirements
+- Python 3.x
+- OpenCV (cv2)
+- Ultralytics YOLO
+- Custom EnhancedCupTracker implementation
 
-1. Clone this repository:
+## Installation
+
+1. Install the required packages:
 ```bash
-git clone https://github.com/yourusername/mugs-tracking.git
-cd mugs-tracking
+pip install ultralytics opencv-python
 ```
 
-2. Create a virtual environment (recommended):
-```bash
-python -m venv venv
-# On Windows
-.\venv\Scripts\activate
-# On Linux/Mac
-source venv/bin/activate
-```
-
-3. Install the required dependencies:
-```bash
-pip install -r requirements.txt
-```
+2. Ensure you have the YOLOv8 nano model file (`yolov8n.pt`) in your working directory.
 
 ## Usage
 
 Run the tracking script with your video file:
 ```bash
-python videotrack.py --input path/to/your/video.mp4 --output output.mp4
+python videotrack_new.py --input path/to/your/video.mp4 --output output.mp4
 ```
 
 ### Arguments
 - `--input`: Path to input video file (default: input_video.mp4)
 - `--output`: Path to output video file (default: output_detected.mp4)
 
-## Model Information
+## Features in Detail
 
-This project uses:
-- YOLOv8n model for object detection
-- DeepSORT for object tracking
+### Detection
+- Uses YOLOv8 nano model for efficient real-time detection
+- Focused on cup detection (COCO class ID 41)
+- Confidence threshold of 0.3 for reliable detections
 
-The model is specifically configured to track cups/mugs (COCO class ID 41) but can be modified to track other objects.
+### Tracking
+- Enhanced DeepSORT implementation
+- Maintains persistent IDs across video frames
+- Handles occlusions and track management
+- Maximum track age: 30 frames
+- Maximum lost frames: 5
+- IOU threshold: 0.3
 
-## Test Data
-
-You can test the tracker with any video containing cups or mugs. Some suggestions for testing:
-1. Record a video of cups being moved around on a table
-2. Use a webcam to capture live cup movements
-3. Download sample videos from public datasets
-
-## Features
-
-- Real-time cup detection and tracking
-- Unique ID assignment for each tracked cup
-- Trajectory visualization with different colors for each cup
-- Confidence score display
-- Detection of other objects in the scene (displayed in gray)
+### Visualization
+- Unique color generation for each tracked cup
+- Trajectory history limited to 50 points for efficiency
+- Bounding boxes with:
+  - Detection confidence scores
+  - Track IDs
+  - Center point markers
+- Gray-scale visualization for other detected objects
