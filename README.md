@@ -1,13 +1,21 @@
 # Cup Tracking with YOLOv8 and DeepSORT
 
-This project implements real-time cup/mug tracking in videos using YOLOv8 and DeepSORT tracking algorithm.
+This project implements real-time cup/mug tracking in videos using YOLOv8 object detection and DeepSORT tracking algorithm. The system can detect and track multiple cups/mugs in a video stream, assign unique IDs to each cup, and visualize their trajectories with different colors.
+
+## Key Features
+- Real-time cup detection using YOLOv8
+- Multi-object tracking with DeepSORT
+- Unique ID assignment for each tracked cup
+- Trajectory visualization with different colors
+- Confidence score display
+- Additional object detection display (in gray)
 
 ## Setup and Installation
 
 1. Clone this repository:
 ```bash
-git clone [your-repository-url]
-cd mugs_tracking
+git clone https://github.com/yourusername/mugs-tracking.git
+cd mugs-tracking
 ```
 
 2. Create a virtual environment (recommended):

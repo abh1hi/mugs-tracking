@@ -16,9 +16,12 @@ OUTPUT_VIDEO_PATH = args.output
 # Load video file instead of camera
 cap = cv2.VideoCapture(INPUT_VIDEO_PATH)
 
-# Initialize YOLOv11n model and DeepSORT
+# Import enhanced tracker
+from cup_tracker import EnhancedCupTracker
+
+# Initialize YOLOv11n model and enhanced tracker
 model = YOLO("yolo11n.pt")
-deepsort = DeepSort(max_age=30)
+tracker = EnhancedCupTracker(max_age=30, max_lost=5, iou_threshold=0.3)
 
 # COCO class ID for cup/mug detection (coffee mug is class 41)
 CUP_CLASS_IDS = {41}  # cup only
@@ -68,9 +71,7 @@ while cap.isOpened():
                     detections.append(([x1, y1, x2 - x1, y2 - y1], conf, 'cup'))
                     center = draw_detection(frame, x1, y1, x2, y2, conf)
                 else:
-                    other_objects.append((x1, y1, x2, y2, cls_id))
-
-        tracks = deepsort.update_tracks(detections, frame=frame)
+                    other_objects.append((x1, y1, x2, y2, cls_id))        tracks = tracker.update(detections, frame=frame)
 
         active_ids = set()
         for track in tracks:
